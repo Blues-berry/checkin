@@ -1,0 +1,18 @@
+name: Prevent Disable
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'  # 每月 1 号运行
+
+jobs:
+  keep-active:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          echo "$(date)" >> keep-alive.txt
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add keep-alive.txt
+          git commit -m "Keep workflow active [skip ci]"
+          git push
